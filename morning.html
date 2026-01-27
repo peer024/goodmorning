@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Good Morning ☀️</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(to top,#fff1c1,#87ceeb);
+  font-family:'Segoe UI',sans-serif;
+  color:#333;
+  text-align:center;
+}
+
+/* container */
+.container{
+  z-index:5;
+  cursor:pointer;
+}
+
+/* main message */
+h1{
+  font-size:2.3rem;
+  animation:glow 2s infinite alternate;
+  padding:0 15px;
+}
+
+@keyframes glow{
+  from{ text-shadow:0 0 6px #ffd966; }
+  to{ text-shadow:0 0 22px #ffb703; }
+}
+
+.hint{
+  font-size:14px;
+  opacity:.8;
+}
+
+/* ☀️ sunrise sun */
+.sun{
+  position:absolute;
+  bottom:-160px;
+  left:50%;
+  transform:translateX(-50%);
+  width:200px;
+  height:200px;
+  background:radial-gradient(circle,#fff7ae,#ffb703);
+  border-radius:50%;
+  box-shadow:0 0 70px rgba(255,183,3,.8);
+  animation:sunrise 7s ease-out forwards;
+  z-index:1;
+}
+
+@keyframes sunrise{
+  to{
+    bottom:70px;
+    box-shadow:0 0 140px rgba(255,183,3,1);
+  }
+}
+
+/* ✨ sparkles */
+.sparkle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:white;
+  opacity:.7;
+  animation:floatUp 4s linear forwards;
+}
+
+@keyframes floatUp{
+  to{
+    transform:translateY(-120vh);
+    opacity:0;
+  }
+}
+
+/* 💖 floating hearts */
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:18px;
+  animation:heartUp 6s linear forwards;
+  color:#ff8fab;
+}
+
+@keyframes heartUp{
+  to{
+    transform:translateY(-110vh);
+    opacity:0;
+  }
+}
+
+/* 🖤 ending screen */
+.ending{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,#fffbe6,#ffffff);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 2.5s ease;
+  z-index:10;
+}
+
+.ending.show{
+  opacity:1;
+  pointer-events:all;
+}
+
+/* 💖 BIG sparkling heart */
+.big-sparkle-heart{
+  font-size:90px;
+  margin-bottom:15px;
+  animation:sparkleHeart 1.8s ease-in-out infinite;
+}
+
+@keyframes sparkleHeart{
+  0%{
+    transform:scale(1);
+    text-shadow:0 0 20px #ff9ecd,0 0 40px #ff5fa2;
+  }
+  50%{
+    transform:scale(1.15);
+    text-shadow:
+      0 0 40px #ff5fa2,
+      0 0 80px #ff9ecd,
+      0 0 120px #ffd6e8;
+  }
+  100%{
+    transform:scale(1);
+    text-shadow:0 0 25px #ff9ecd,0 0 50px #ff5fa2;
+  }
+}
+
+/* 🌸 first ending line */
+.final-text{
+  font-size:1.4rem;
+  letter-spacing:3px;
+  font-weight:600;
+  background:linear-gradient(120deg,#ff8fab,#ffb703,#ff8fab);
+  background-size:300%;
+  color:transparent;
+  -webkit-background-clip:text;
+  animation:shimmer 3s linear infinite;
+}
+
+@keyframes shimmer{
+  to{ background-position:300%; }
+}
+
+/* 💖 emotional final line */
+.final-love{
+  margin-top:18px;
+  font-size:1.6rem;
+  font-family:'Georgia','Times New Roman',serif;
+  letter-spacing:2px;
+  color:#ff5fa2;
+  animation:loveGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes loveGlow{
+  from{
+    text-shadow:0 0 12px #ff9ecd;
+  }
+  to{
+    text-shadow:
+      0 0 30px #ff5fa2,
+      0 0 60px #ff9ecd;
+    transform:scale(1.05);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="sun"></div>
+
+<div class="container" onclick="nextMessage()">
+  <h1 id="text">☀️ Good Morning 🤍</h1>
+  <div class="hint">Tap the message ☀️</div>
+</div>
+
+<div class="ending" id="ending">
+  <div class="big-sparkle-heart">💖</div>
+  <div class="final-text">START YOUR DAY WITH A SMILE 🤍</div>
+  <div class="final-love">I AM ALWAYS WITH YOU MAH 💖</div>
+</div>
+
+<audio id="chime">
+  <source src="https://cdn.pixabay.com/audio/2022/08/04/audio_19a1fdf29d.mp3">
+</audio>
+
+<script>
+const name = "Aisha";
+
+const messages = [
+  `☀️ Good Morning, ${name} 🤍`,
+  `🕊️ Begin With Bismillah`,
+  `🤲 May Allah Bless Your Day`,
+  `🌸 Stay Calm & Positive`,
+  `✨ Smile, A New Day Awaits`
+];
+
+let index = 0;
+
+function nextMessage(){
+  index++;
+  if(index < messages.length){
+    text.innerText = messages[index];
+  } else {
+    ending.classList.add("show");
+    chime.volume = 0.4;
+    chime.play();
+  }
+}
+
+/* sparkles */
+setInterval(()=>{
+  const s=document.createElement("div");
+  s.className="sparkle";
+  s.style.left=Math.random()*100+"vw";
+  s.style.bottom="0";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),4000);
+},700);
+
+/* floating hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent="💖";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},900);
+</script>
+
+</body>
+</html>
